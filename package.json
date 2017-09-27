@@ -1,0 +1,24 @@
+{
+  "name": "Plugin",
+  "version": "1.0.0-SNAPSHOT",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/99Taxis/graylog-archive-plugin"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/webpack-dev-server",
+    "build": "./node_modules/.bin/webpack",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc src/**/*"
+  },
+  "keywords": [
+    "graylog"
+  ],
+  "author": "99 Taxis <devs@99taxis.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin",
+    "webpack": "^3.6.0"
+  }
+}
