@@ -4,8 +4,18 @@ import webpackEntry from 'webpack-entry';
 import { PluginManifest, PluginStore } from 'graylog-web-plugin/plugin';
 
 import packageJson from '../../package.json';
-
+import ArchiveConfiguration from "components/ArchiveConfiguration";
 const manifest = new PluginManifest(packageJson, {
+
+  systemConfigurations: [
+         {
+             component: ArchiveConfiguration,
+             configType: 'com.taxis99.graylog.archive.ArchiveConfiguration',
+         },
+     ],
+
+
+
   /* This is the place where you define which entities you are providing to the web interface.
      Right now you can add routes and navigation elements to it.
 
