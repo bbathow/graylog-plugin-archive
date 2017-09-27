@@ -1,4 +1,4 @@
-package com.taxis99.graylog.archive.plugin;
+package com.taxis99.graylog.archive;
 
 import org.graylog2.plugin.PluginConfigBean;
 import org.graylog2.plugin.PluginModule;
@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * Extend the PluginModule abstract class here to add you plugin to the system.
  */
-public class PluginModule extends PluginModule {
+public class ArchiveModule extends PluginModule {
     /**
      * Returns all configuration beans required by this plugin.
      *

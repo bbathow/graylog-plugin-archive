@@ -1,4 +1,4 @@
-package com.taxis99.graylog.archive.plugin;
+package com.taxis99.graylog.archive;
 
 import org.graylog2.plugin.PluginMetaData;
 import org.graylog2.plugin.ServerStatus;
@@ -11,17 +11,17 @@ import java.util.Set;
 /**
  * Implement the PluginMetaData interface here.
  */
-public class PluginMetaData implements PluginMetaData {
+public class ArchiveMetaData implements PluginMetaData {
     private static final String PLUGIN_PROPERTIES = "com.taxis99.graylog-archive-plugin/graylog-plugin.properties";
 
     @Override
     public String getUniqueId() {
-        return "com.taxis99.graylog.archive.plugin.PluginPlugin";
+        return "com.taxis99.graylog.archive.ArchivePlugin";
     }
 
     @Override
     public String getName() {
-        return "Plugin";
+        return "Archive";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PluginMetaData implements PluginMetaData {
 
     @Override
     public URI getURL() {
-        return URI.create("https://github.com/https://github.com/99Taxis/graylog-archive-plugin");
+        return URI.create("https://github.com/https://github.com/https://github.com/99Taxis/graylog-archive-plugin");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class PluginMetaData implements PluginMetaData {
     @Override
     public String getDescription() {
         // TODO Insert correct plugin description
-        return "Description of Plugin plugin";
+        return "Description of Archive plugin";
     }
 
     @Override
