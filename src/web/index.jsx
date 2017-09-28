@@ -4,39 +4,16 @@ import webpackEntry from 'webpack-entry';
 import { PluginManifest, PluginStore } from 'graylog-web-plugin/plugin';
 
 import packageJson from '../../package.json';
-import ArchiveConfiguration from "components/ArchiveConfiguration";
-const manifest = new PluginManifest(packageJson, {
+import BackupConfiguration from "components/ArchiveRetentionConfiguration";
 
-  systemConfigurations: [
-         {
-             component: ArchiveConfiguration,
-             configType: 'com.taxis99.graylog.archive.ArchiveConfiguration',
-         },
-     ],
-
-
-
-  /* This is the place where you define which entities you are providing to the web interface.
-     Right now you can add routes and navigation elements to it.
-
-     Examples: */
-
-  // Adding a route to /sample, rendering YourReactComponent when called:
-
-  // routes: [
-  //  { path: '/sample', component: YourReactComponent, permissions: 'inputs:create' },
-  // ],
-
-  // Adding an element to the top navigation pointing to /sample named "Sample":
-
-  // navigation: [
-  //  { path: '/sample', description: 'Sample' },
-  // ]
-});
-
-PluginStore.register(manifest);
-
-if (module.hot) {
-  module.hot.accept();
-  module.hot.dispose(() => PluginStore.unregister(manifest));
-}
+PluginStore.register(new PluginManifest(packageJson, {
+  indexRetentionConfig: [
+    {
+      //path da classe Java
+      type: 'org.graylog2.indexer.retention.strategies.SnapshotRetentionStrategy',
+      displayName: 'Snapshot Strategy',
+      configComponent: BackupConfiguration,
+      summaryComponent: BackupConfiguration
+    },
+  ],
+}));
