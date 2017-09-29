@@ -35,6 +35,7 @@
         <maven.deploy.skip>true</maven.deploy.skip>
 
         <graylog.version>2.1.1</graylog.version>
+        <els.version>2.1.1</els.version>
         <graylog.plugin-dir>/usr/share/graylog-server/plugin</graylog.plugin-dir>
     </properties>
 
@@ -83,6 +84,12 @@
             <artifactId>graylog2-server</artifactId>
             <version>${graylog.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${els.version}</version>
         </dependency>
     </dependencies>
 

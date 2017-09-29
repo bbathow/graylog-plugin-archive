@@ -7,6 +7,8 @@ services:
     command: "elasticsearch -Des.cluster.name='graylog'"
   graylog:
     image: graylog2/server:2.1.1-1
+    volumes:
+      - ./target/:/usr/share/graylog/plugin
     environment:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
