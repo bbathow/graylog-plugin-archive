@@ -1,7 +1,7 @@
 import Reflux from 'reflux';
 
-const BackupActions = Reflux.createActions({
+const ArchiveActions = Reflux.createActions({
     launchRestore: { asyncResult: true },
 });
 
-export default BackupActions;
+export default ArchiveActions;

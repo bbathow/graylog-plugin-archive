@@ -4,7 +4,7 @@ import webpackEntry from 'webpack-entry';
 import { PluginManifest, PluginStore } from 'graylog-web-plugin/plugin';
 
 import packageJson from '../../package.json';
-import BackupConfiguration from "components/BackupConfiguration";
+import ArchiveRetentionConfiguration from "components/ArchiveRetentionConfiguration";
 
 
 const manifest = new PluginManifest(packageJson, {
@@ -13,7 +13,7 @@ const manifest = new PluginManifest(packageJson, {
     {
       type: 'org.graylog2.indexer.retention.strategies.ArchiveRetentionStrategy',
       displayName: 'Snapshot Index',
-      configComponent: BackupConfiguration,
+      configComponent: ArchiveRetentionConfiguration,
     }
   ],
 

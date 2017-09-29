@@ -4,7 +4,7 @@ import { Input } from 'components/bootstrap';
 import RepositorySelect from 'components/RepositorySelect';
 
 
-const BackupConfiguration = React.createClass({
+const ArchiveRetentionConfiguration = React.createClass({
   propTypes: {
     config: PropTypes.object.isRequired,
     jsonSchema: PropTypes.object.isRequired,
@@ -13,7 +13,9 @@ const BackupConfiguration = React.createClass({
 
   getInitialState() {
     return {
-      max_number_of_indices: "sdaadas",
+      max_number_of_indices: 20,
+       //max_number_of_indices: this.props.config.max_number_of_indices,
+
     };
   },
 
@@ -57,4 +59,4 @@ const BackupConfiguration = React.createClass({
   },
 });
 
-export default BackupConfiguration;
+export default ArchiveRetentionConfiguration;

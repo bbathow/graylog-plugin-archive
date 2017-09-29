@@ -1,10 +1,10 @@
 {
-  "name": "Arcive",
+  "name": "Archive",
   "version": "1.0.0-SNAPSHOT",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/99Taxis/graylog-archive-plugin"
+    "url": "https://github.com/99Taxis/graylog-plugin-archive"
   },
   "scripts": {
     "start": "./node_modules/.bin/webpack-dev-server",

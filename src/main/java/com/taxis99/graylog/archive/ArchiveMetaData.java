@@ -12,7 +12,7 @@ import java.util.Set;
  * Implement the PluginMetaData interface here.
  */
 public class ArchiveMetaData implements PluginMetaData {
-    private static final String PLUGIN_PROPERTIES = "com.taxis99.graylog-archive-plugin/graylog-plugin.properties";
+    private static final String PLUGIN_PROPERTIES = "com.taxis99.graylog-plugin-archive/graylog-plugin.properties";
 
     @Override
     public String getUniqueId() {
@@ -31,7 +31,7 @@ public class ArchiveMetaData implements PluginMetaData {
 
     @Override
     public URI getURL() {
-        return URI.create("https://github.com/https://github.com/https://github.com/99Taxis/graylog-archive-plugin");
+        return URI.create("https://github.com/https://github.com/https://github.com/99Taxis/graylog-plugin-archive");
     }
 
     @Override

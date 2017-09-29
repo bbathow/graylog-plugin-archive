@@ -1,7 +1,7 @@
 import Reflux from 'reflux';
 
 
-import BackupActions from 'components/BackupActions'
+import ArchiveActions from 'components/ArchiveActions'
 
 
 import UserNotification from 'util/UserNotification';
@@ -10,8 +10,8 @@ import fetch from 'logic/rest/FetchProvider';
 
 const urlPrefix = '/plugins/org.graylog.plugins.backup';
 
-const BackupStore = Reflux.createStore({
-    listenables: [BackupActions],
+const ArchiveServices = Reflux.createStore({
+    listenables: [ArchiveActions],
 
     getInitialState() {
         return {
@@ -38,19 +38,19 @@ const BackupStore = Reflux.createStore({
         return URLUtils.qualifyUrl(`${urlPrefix}${path}`);
     },
 
-
-    launchRestore() {
-        console.log("restore chiamato");
-        const promise = fetch('POST', this._url('/launchrestore'));
+    //this function will create a els snapshots, we can do it with declaring Java class 
+    createSnapshot() {
+        console.log("snapshot requested");
+        const promise = fetch('POST', this._url('/createsnapshot'));
         promise.then((response) => {
             this.trigger({ config: response });
             UserNotification.success('Configuration restore was completed successfully');
-        }, this._errorHandler('Backup restore failed', 'Unable restore config'));
+        }, this._errorHandler('Archive snapshot failed', 'Unable to create snapshot config'));
 
-        BackupActions.launchRestore.promise(promise);
+        ArchiveActions.launchRestore.promise(promise);
     },
 
 
 });
 
-export default BackupStore;
+export default ArchiveServices;
