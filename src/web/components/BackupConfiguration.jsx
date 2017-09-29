@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Input } from 'components/bootstrap';
+import RepositorySelect from 'components/RepositorySelect';
+
 
 const BackupConfiguration = React.createClass({
   propTypes: {
@@ -27,17 +29,30 @@ const BackupConfiguration = React.createClass({
 
   render() {
     return (
-      <div>
-        <fieldset>
-          <Input type="number"
-                 id="max-number-of-indices"
-                 label="Max number of indices"
-                 onChange={this._onInputUpdate('max_number_of_indices')}
-                 value="dasdasd"
-                 help={<span>Maximum number of indices to keep before <strong>closing</strong> the oldest ones</span>}
-                 required />
-        </fieldset>
-      </div>
+        <div>
+          <div>
+            <fieldset>
+              <Input type="number"
+                     id="max-number-of-indices"
+                     label="Max number of elasticsearch indices"
+                     onChange={this._onInputUpdate('max_number_of_indices')}
+                     value={this.state.max_number_of_indices}
+                     help={<span>Maximum number of <strong>elasticsearch</strong> indices to <strong>snapshots</strong></span>}
+                     required />
+            </fieldset>
+          </div>
+
+
+          <div>
+            <label htmlFor="recipient-name" className="control-label">Select the elasticsearch repository name</label>
+            <fieldset>
+            <RepositorySelect ref="session_timeout_unit" className="form-control repository-select-fields"
+                               disabled={this.state.sessionTimeoutNever}
+                               value={this.state.unit} onChange={this._onChangeUnit}
+                               />
+            </fieldset>
+          </div>
+        </div>
     );
   },
 });
