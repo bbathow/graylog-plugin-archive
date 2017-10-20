@@ -7,25 +7,21 @@ import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotR
 import org.elasticsearch.action.admin.cluster.repositories.delete.DeleteRepositoryResponse;
 import org.elasticsearch.client.Client;
 
+import java.util.List;
+
 /**
  * Created by drsantos on 9/29/17.
  */
 public interface SnapshotService {
 
-    boolean isRepositoryExist(Client client, String repositoryName);
-
-    PutRepositoryResponse createRepository(Client client, String repositoryName,
+    void createRepository(String repositoryName,
                                            String path, boolean compress);
+    void deleteRepository(String repositoryName);
 
-    DeleteRepositoryResponse deleteRepository(Client client, String repositoryName);
+    void createSnapshot(String repositoryName, String index);
 
-    boolean isSnapshotExist(Client client, String repositoryName, String snapshotName);
+    void deleteSnapshot(String repositoryName, String snapshotName);
 
-    CreateSnapshotResponse createSnapshot(Client client, String repositoryName,
-                                          String snapshotName, String indexName);
-
-    DeleteSnapshotResponse deleteSnapshot(Client client, String repositoryName, String snapshotName);
-
-    RestoreSnapshotResponse restoreSnapshot(Client client, String repositoryName, String snapshotName);
+    void restoreSnapshot( String repositoryName, String snapshotName);
 
 }

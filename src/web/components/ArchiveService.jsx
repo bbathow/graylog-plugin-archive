@@ -37,20 +37,6 @@ const ArchiveServices = Reflux.createStore({
     _url(path) {
         return URLUtils.qualifyUrl(`${urlPrefix}${path}`);
     },
-
-    //this function will create a els snapshots, we can do it with declaring Java class 
-    createSnapshot() {
-        console.log("snapshot requested");
-        const promise = fetch('POST', this._url('/createsnapshot'));
-        promise.then((response) => {
-            this.trigger({ config: response });
-            UserNotification.success('Configuration restore was completed successfully');
-        }, this._errorHandler('Archive snapshot failed', 'Unable to create snapshot config'));
-
-        ArchiveActions.launchRestore.promise(promise);
-    },
-
-
 });
 
 export default ArchiveServices;

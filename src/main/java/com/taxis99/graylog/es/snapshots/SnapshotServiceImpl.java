@@ -1,184 +1,243 @@
 package com.taxis99.graylog.es.snapshots;
 
-import org.elasticsearch.action.admin.cluster.repositories.delete.DeleteRepositoryResponse;
-import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryResponse;
-import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotResponse;
-import org.elasticsearch.action.admin.cluster.snapshots.delete.DeleteSnapshotResponse;
+import com.google.gson.Gson;
+import io.searchbox.client.JestClient;
+import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.JestResult;
+import io.searchbox.client.config.HttpClientConfig;
+import io.searchbox.snapshot.CreateSnapshot;
+import io.searchbox.snapshot.CreateSnapshotRepository;
+import io.searchbox.snapshot.DeleteSnapshot;
+import io.searchbox.snapshot.DeleteSnapshotRepository;
 import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotRequest;
-import org.elasticsearch.action.admin.cluster.snapshots.restore.RestoreSnapshotResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.cluster.metadata.RepositoryMetaData;
 import org.elasticsearch.common.settings.Settings;
-
-import org.elasticsearch.snapshots.SnapshotInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by drsantos on 9/29/17.
  */
+
+//TODO change author
 public class SnapshotServiceImpl implements SnapshotService {
 
     private static final Logger log = LoggerFactory.getLogger(SnapshotServiceImpl.class);
 
-    @Override
-    public boolean isRepositoryExist(Client client, String repositoryName) {
-        boolean result = false;
+    private final JestClient jestClient;
 
-        try {
+    public SnapshotServiceImpl() {
+        JestClientFactory factory = new JestClientFactory();
 
-            List<RepositoryMetaData> repositories = client.admin().cluster().prepareGetRepositories().get().repositories();
+        factory.setHttpClientConfig(new HttpClientConfig
+                .Builder("http://localhost:9200")
+                .multiThreaded(true)
+                //Per default this implementation will create no more than 2 concurrent connections per given route
+                .defaultMaxTotalConnectionPerRoute(2)
+                // and no more 20 connections in total
+                .maxTotalConnection(2)
+                        .build());
 
-            if(repositories.size() > 0){
-                for(RepositoryMetaData repo :repositories)
-                    result = repositoryName.equals(repo.name())?true:false;
-            }
-
-        } catch (Exception ex){
-            log.error("Exception in getRepository method: " + ex.toString());
-
-        } finally {
-            return result;
-        }
+        jestClient = factory.getObject();
     }
 
-    @Override
-    public PutRepositoryResponse createRepository(Client client, String repositoryName, String path, boolean compress) {
 
-        PutRepositoryResponse putRepositoryResponse = null;
+    /*
+
+    @Inject
+    public SnapshotServiceImpl(JestClient jestClient) {
+        this.jestClient = jestClient;
+    }
+    */
+
+    @Override
+    public void createRepository(String repositoryName, String path, boolean compress) {
+
+        String repository = "repo02";
 
         try {
+            System.out.println("SnapshotServiceImpl::createRepositoryAAAAAAAAAAA");
+            final Settings.Builder registerRepositorySettings = Settings.builder();
+            registerRepositorySettings.put("compress", "true");
+            registerRepositorySettings.put("location", "/dev/shm");
+            registerRepositorySettings.put("chunk_size", "10m");
+            registerRepositorySettings.put("max_restore_bytes_per_sec", "40mb");
+            registerRepositorySettings.put("max_snapshot_bytes_per_sec", "40mb");
+            registerRepositorySettings.put("readonly", "false");
+            registerRepositorySettings.put("type", "fs");
 
-            if(!isRepositoryExist(client, repositoryName)) {
 
-                Settings settings = Settings.builder()
-                        .put("location", path + repositoryName)
-                        .put("compress", compress).build();
+            String test = new Gson().toJson(registerRepositorySettings.build());
+            //String temp = test.substring()
+            //CreateSnapshotRepository createSnapshotRepository = new CreateSnapshotRepository.Builder("repo01").setHeader("type", "fs").settings(test).build();
 
-                putRepositoryResponse = client.admin().cluster().preparePutRepository(repositoryName)
-                        .setType("fs").setSettings(settings).get();
+            CreateSnapshotRepository createSnapshotRepository = new CreateSnapshotRepository.Builder(repository).setHeader("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==").settings(registerRepositorySettings.build().getAsMap()).build();
 
+
+            /*
+            System.out.println("before !!!!!!");
+            CreateSnapshotRepository testa = new CreateSnapshotRepository.Builder(repository).settings(registerRepositorySettings.build().getAsMap()).build();
+            System.out.println("after " + testa);
+            */
+
+            //System.out.println("json " + createSnapshotRepository.getData(new Gson()));
+            //JestResult jestResult = jestClient.execute(createSnapshotRepository);
+
+            //CreateSnapshotRepository createSnapshotRepository = new CreateSnapshotRepository.Builder("repo01").settings(registerRepositorySettings.build()).build();
+            //String settings = new Gson().toJson(createSnapshotRepository.getData(new Gson()));
+            //System.out.println("json " + settings);
+            //JestResult jestResult = jestClient.execute(createSnapshotRepository);
+
+            //jestClient.execute(new CreateSnapshotRepository.Builder("articles").settings(Settings.builder().loadFromSource(settings).build().getAsMap()).build());
+
+            //CreateSnapshotRepository createSnapshotRepository = new CreateSnapshotRepository.Builder(repositoryName).settings(registerRepositorySettings.build().getAsMap()).build();
+
+            /*
+            String settings = new Gson().toJson(createSnapshotRepository.getData(new Gson()));
+
+            System.out.println("json object " + settings);
+
+            String script = "{\n" +
+                            "    \"type\" : \"fs\",\n" +
+                            "    \"settings\" : {\n" +
+                            "        \"location\" : \"/dev/shm\",\n" +
+                            "        \"compress\" : true\n" +
+                            "    }\n" +
+                            "}";
+
+
+            JestResult jestResult = jestClient.execute(new CreateSnapshotRepository.Builder(repositoryName)
+                    .settings(registerRepositorySettings.build()).setHeader("Content-Type", "application/json")
+                    .build());
+
+                         String script = "{\n" +
+                    "    \"type\" : \"fs\",\n" +
+                    "    \"settings\" : {\n" +
+                    "        \"location\" : \"/dev/shm\",\n" +
+                    "        \"compress\" : true\n" +
+                    "    }\n" +
+                    "}";
+
+                    String script = "{\n" +
+                    "    \"type\" : \"fs\",\n" +
+                    "    \"settings\" : {\n" +
+                    "        \"location\" : \"/dev/shm\",\n" +
+                    "        \"compress\" : true\n" +
+                    "    }\n" +
+                    "}";
+
+            System.out.println(new CreateSnapshotRepository.Builder("repo02")
+                    .settings(registerRepositorySettings).setHeader("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==").build());
+
+            jestClient.execute(new CreateSnapshotRepository.Builder("repo02")
+                    .settings(registerRepositorySettings).setHeader("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==").build()).setJsonString(script);
+            */
+
+            System.out.println("test " + test);
+
+            System.out.println("json " + createSnapshotRepository.getData(new Gson()));
+            JestResult jestResult = jestClient.execute(createSnapshotRepository);
+
+            System.out.println("result: " + jestResult);
+
+            if(jestResult.isSucceeded()) {
+                System.out.println("Repository was created.");
                 log.info("Repository was created.");
+            } else {
+                System.out.println("Repository was not created." + jestResult.getErrorMessage());
+            }
 
-            } else
-                log.info(repositoryName + " repository already exists");
+
 
         } catch(Exception ex){
             log.error("Exception in createRepository method: " + ex.toString());
-
-        } finally {
-            return putRepositoryResponse;
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
-
     }
 
     @Override
-    public DeleteRepositoryResponse deleteRepository(Client client, String repositoryName) {
-        DeleteRepositoryResponse deleteRepositoryResponse = null;
+    public void deleteRepository(String repositoryName) {
 
         try {
 
-            if (isRepositoryExist(client, repositoryName)) {
-
-                deleteRepositoryResponse = client.admin().cluster().prepareDeleteRepository(repositoryName).execute().actionGet();
-                log.info(repositoryName + " repository has been deleted.");
-            }
+            jestClient.execute(new DeleteSnapshotRepository.Builder(repositoryName).build());
+            log.info(repositoryName + " repository has been deleted.");
 
         } catch (Exception ex){
             log.error("Exception in deleteRepository method: " + ex.toString());
 
-        } finally {
-            return deleteRepositoryResponse;
         }
     }
 
     @Override
-    public boolean isSnapshotExist(Client client, String repositoryName, String snapshotName) {
-        boolean result = false;
+    public void createSnapshot(String repositoryName, String index) {
+
+        final Settings.Builder registerRepositorySettings = Settings.builder();
+        registerRepositorySettings.put("indices", index);
+        registerRepositorySettings.put("ignore_unavailable", "true");
+        registerRepositorySettings.put("include_global_state", "false");
+        String snapshotName;
 
         try {
+            snapshotName = new SimpleDateFormat("yyyy-MM-DD:HH:mm:ss").format(new Date());
 
-            List<SnapshotInfo> snapshotInfo = client.admin().cluster().prepareGetSnapshots(repositoryName).get().getSnapshots();
+            JestResult jestResult = jestClient.execute(new CreateSnapshot.Builder(repositoryName, snapshotName).setHeader("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==")
+                    .settings(registerRepositorySettings.build())
+                    .build());
+            log.info("Snapshot was created.");
 
-            if(snapshotInfo.size() > 0){
-                for(SnapshotInfo snapshot :snapshotInfo)
-                    result = snapshotName.equals(snapshot.name())?true:false;
+
+            if(jestResult.isSucceeded()) {
+                log.info("Repository was created.");
+            } else {
+                log.error("Repository was created.", jestResult.getErrorMessage());
             }
 
-        } catch (Exception ex) {
-            log.error("Exception in getSnapshot method: " + ex.toString());
-
-        } finally {
-            return result;
-        }
-    }
-
-    @Override
-    public CreateSnapshotResponse createSnapshot(Client client, String repositoryName, String snapshotName, String indexName) {
-        CreateSnapshotResponse createSnapshotResponse = null;
-        try {
-
-            if(isSnapshotExist(client, repositoryName, snapshotName))
-                log.info(snapshotName + " snapshot already exists");
-
-            else {
-
-                createSnapshotResponse = client.admin().cluster()
-                        .prepareCreateSnapshot(repositoryName, snapshotName)
-                        .setWaitForCompletion(true)
-                        .setIndices(indexName).get();
-
-                log.info("Snapshot was created.");
-            }
 
         } catch (Exception ex){
             log.error("Exception in createSnapshot method: " + ex.toString());
-
-        } finally {
-            return createSnapshotResponse;
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
     @Override
-    public DeleteSnapshotResponse deleteSnapshot(Client client, String repositoryName, String snapshotName) {
-        DeleteSnapshotResponse deleteSnapshotResponse = null;
+    public void deleteSnapshot(String repositoryName, String snapshotName) {
 
         try {
 
-            if (isSnapshotExist(client, repositoryName, snapshotName)) {
-                deleteSnapshotResponse = client.admin().cluster().prepareDeleteSnapshot(repositoryName, snapshotName)
-                        .execute().actionGet();
-                log.info(snapshotName + " snapshot has been deleted.");
-            }
+            jestClient.execute(new DeleteSnapshot.Builder(repositoryName, snapshotName).build());
+            log.info(snapshotName + " snapshot has been deleted.");
+
 
         } catch (Exception ex){
             log.error("Exception in deleteSnapshot method: " + ex.toString());
 
-        } finally {
-            return deleteSnapshotResponse;
         }
     }
 
     @Override
-    public RestoreSnapshotResponse restoreSnapshot(Client client, String repositoryName, String snapshotName) {
-        RestoreSnapshotResponse restoreSnapshotResponse = null;
+    public void restoreSnapshot(String repositoryName, String snapshotName) {
         try {
 
-            if(isRepositoryExist(client, repositoryName) && isSnapshotExist(client, repositoryName, snapshotName)){
+            RestoreSnapshotRequest restoreSnapshotRequest = new RestoreSnapshotRequest(repositoryName, snapshotName);
+            log.info("Snapshot was restored.");
 
-                RestoreSnapshotRequest restoreSnapshotRequest = new RestoreSnapshotRequest(repositoryName, snapshotName);
-                restoreSnapshotResponse = client.admin().cluster().restoreSnapshot(restoreSnapshotRequest).get();
-
-                log.info("Snapshot was restored.");
-            }
 
         } catch (Exception ex){
             log.error("Exception in restoreSnapshot method: " + ex.toString());
 
-        } finally {
-            return restoreSnapshotResponse;
         }
+    }
+
+    public static void main(String [] args) {
+
+        SnapshotServiceImpl snapshotServiceImpl = new SnapshotServiceImpl();
+
+        snapshotServiceImpl.createSnapshot("repo03", "index");
+
     }
 }
