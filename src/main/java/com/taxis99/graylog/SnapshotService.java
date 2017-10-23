@@ -1,4 +1,4 @@
-package com.taxis99.graylog.es.snapshots;
+package com.taxis99.graylog;
 
 import org.elasticsearch.action.admin.cluster.repositories.put.PutRepositoryResponse;
 import org.elasticsearch.action.admin.cluster.snapshots.create.CreateSnapshotResponse;
@@ -21,7 +21,5 @@ public interface SnapshotService {
     void createSnapshot(String repositoryName, String index);
 
     void deleteSnapshot(String repositoryName, String snapshotName);
-
-    void restoreSnapshot( String repositoryName, String snapshotName);
 
 }

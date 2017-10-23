@@ -29,9 +29,7 @@ import java.util.List;
 public class RepositoryResource extends RestResource implements PluginRestResource {
 
     private final JestClient jestClient;
-
     private static final Logger log = LoggerFactory.getLogger(RepositoryResource.class);
-
 
     @Inject
     public RepositoryResource(JestClient jestClient) {
@@ -40,15 +38,13 @@ public class RepositoryResource extends RestResource implements PluginRestResour
 
     @GET
     @Timed
-    @ApiOperation(value = "Lists all existing collector registrations")
+    @ApiOperation(value = "Lists all existing repositoryes registrations")
     public List<String> getRepositoryCreated() {
         List<String> repoList = new ArrayList<>();
 
         try {
 
-            //GetSnapshotRepository getSnapshotRepository = new GetSnapshotRepository.Builder().setHeader("Authorization", "Basic ZWxhc3RpYzpjaGFuZ2VtZQ==").build();
             GetSnapshotRepository getSnapshotRepository = new GetSnapshotRepository.Builder().build();
-
             JestResult jestResult = jestClient.execute(getSnapshotRepository);
 
             JSONObject mainObject = new JSONObject(jestResult.getJsonString());
@@ -59,8 +55,7 @@ public class RepositoryResource extends RestResource implements PluginRestResour
             }
 
         } catch (Exception ex) {
-            log.error("Exception in createSnapshot method: " + ex.toString());
-            ex.printStackTrace();
+            log.error("Exception in createSnapshot method: " + ex.getMessage());
         }
 
         return repoList;

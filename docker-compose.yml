@@ -1,20 +1,27 @@
 version: '2'
 services:
-  some-mongo:
+  mongo:
     image: "mongo:3"
-  some-elasticsearch:
-    image: "elasticsearch:2"
-    command: "elasticsearch -Des.cluster.name='graylog'"
+  elasticsearch:
+    image: "docker.elastic.co/elasticsearch/elasticsearch:5.6.2"
+    environment:
+      - cluster.name=graylog
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+    ports:
+      - "9200:9200"
   graylog:
-    image: graylog2/server:2.1.1-1
+    image: graylog2/server:2.3.1-1
     volumes:
-      - ./target/:/usr/share/graylog/plugin
+      - ./target/graylog-plugin-archive-1.0.0-SNAPSHOT.jar:/usr/share/graylog/plugin/graylog-plugin-archive.jar
     environment:
       GRAYLOG_PASSWORD_SECRET: somepasswordpepper
       GRAYLOG_ROOT_PASSWORD_SHA2: 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+      GRAYLOG_ELASTICSEARCH_HOSTS: http://elastic:changeme@elasticsearch:9200
+      GRAYLOG_MONGODB_URI: mongodb://mongo/graylog
     links:
-      - some-mongo:mongo
-      - some-elasticsearch:elasticsearch
+      - mongo:mongo
+      - elasticsearch:elasticsearch
     ports:
       - "9000:9000"

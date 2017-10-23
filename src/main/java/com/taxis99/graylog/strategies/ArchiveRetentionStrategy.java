@@ -3,7 +3,7 @@ package com.taxis99.graylog.strategies;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableMap;
-import com.taxis99.graylog.es.snapshots.SnapshotServiceImpl;
+import com.taxis99.graylog.SnapshotServiceImpl;
 import org.graylog2.audit.AuditActor;
 import org.graylog2.audit.AuditEventSender;
 import org.graylog2.indexer.IndexSet;

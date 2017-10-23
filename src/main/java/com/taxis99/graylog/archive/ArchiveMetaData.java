@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * Implement the PluginMetaData interface here.
  */
+
 public class ArchiveMetaData implements PluginMetaData {
     private static final String PLUGIN_PROPERTIES = "com.taxis99.graylog-plugin-archive/graylog-plugin.properties";
 
