@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'components/bootstrap';
-import ObjectUtils from 'util/ObjectUtils';
 import URLUtils from 'util/URLUtils';
 import UserNotification from 'util/UserNotification';
-import fetch, { fetchPeriodically } from 'logic/rest/FetchProvider';
+import fetch from 'logic/rest/FetchProvider';
 
 const urlPrefix = '/plugins/com.taxis99.graylog.archive';
 
@@ -44,7 +43,6 @@ const ArchiveRetentionConfiguration = React.createClass({
   },
 
   componentDidMount: function() {
-
     const promise = fetch('GET', this._url('/system/repository'));
     promise
       .then(
@@ -66,6 +64,7 @@ const ArchiveRetentionConfiguration = React.createClass({
                  id="max_number_of_indices"
                  label="Max number of elasticsearch indices"
                  value={ this.state.config.max_number_of_indices }
+                 maxlength="100"
                  onChange={ this._onInputUpdate('max_number_of_indices') }
                  help={ <span>Maximum number of <strong>elasticsearch</strong> indices to <strong>snapshots</strong></span> }
                  required />

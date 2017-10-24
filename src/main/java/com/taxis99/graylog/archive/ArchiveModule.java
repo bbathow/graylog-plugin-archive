@@ -25,7 +25,7 @@ public class ArchiveModule extends PluginModule {
         return Collections.emptySet();
     }
 
-    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(ArchiveModule.class);
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ArchiveModule.class);
 
     @Override
     protected void configure() {
@@ -34,6 +34,6 @@ public class ArchiveModule extends PluginModule {
         bind(SnapshotService.class).to(SnapshotServiceImpl.class);
         addConfigBeans();
         addRestResource(RepositoryResource.class);
-        LOG.info("graylog-archive-plugin started");
+        log.info("graylog-archive-plugin started");
     }
 }

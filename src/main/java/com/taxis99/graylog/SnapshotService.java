@@ -9,9 +9,6 @@ import org.elasticsearch.client.Client;
 
 import java.util.List;
 
-/**
- * Created by drsantos on 9/29/17.
- */
 public interface SnapshotService {
 
     void createRepository(String repositoryName,

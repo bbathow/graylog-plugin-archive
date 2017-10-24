@@ -17,13 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.graylog2.audit.AuditEventTypes.ES_INDEX_RETENTION_DELETE;
 
 public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionStrategy {
-    private static final Logger LOG = LoggerFactory.getLogger(ArchiveRetentionStrategy.class);
+    private static final Logger log = LoggerFactory.getLogger(ArchiveRetentionStrategy.class);
 
     private final Indices indices;
     private final NodeId nodeId;
@@ -68,7 +69,7 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
 
         final ArchiveRetentionStrategyConfig config = (ArchiveRetentionStrategyConfig) strategyConfig;
 
-        System.out.println("Repository Name: "+ config.nameOfRepository());
+        log.info("Repository Name: ", config.nameOfRepository());
 
         return config.nameOfRepository();
     }
@@ -78,10 +79,8 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
         final Stopwatch sw = Stopwatch.createStarted();
 
         //create and delete
-        System.out.println("retain ArchiveRetentionStrategy is called");
+        log.info("retain ArchiveRetentionStrategy has been started");
 
-
-        //create datetime graylog_ ISO Datetime
         snapshotService.createSnapshot(getRepositoryName(indexSet), indexName);
         indices.delete(indexName);
 
@@ -90,7 +89,7 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
                 "retention_strategy", this.getClass().getCanonicalName()
         ));
 
-        LOG.info("Finished index retention strategy for elasticsearch [delete] for index <{}> in {}ms.", indexName,
+        log.info("Finished index retention strategy for elasticsearch [delete] for index <{}> in {}ms.", indexName,
                 sw.stop().elapsed(TimeUnit.MILLISECONDS));
     }
 

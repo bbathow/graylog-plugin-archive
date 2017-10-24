@@ -32,7 +32,7 @@ public class ArchiveMetaData implements PluginMetaData {
 
     @Override
     public URI getURL() {
-        return URI.create("https://github.com/https://github.com/https://github.com/99Taxis/graylog-plugin-archive");
+        return URI.create("https://github.com/99Taxis/graylog-plugin-archive");
     }
 
     @Override
@@ -42,7 +42,6 @@ public class ArchiveMetaData implements PluginMetaData {
 
     @Override
     public String getDescription() {
-        // TODO Insert correct plugin description
         return "Description of Archive plugin";
     }
 

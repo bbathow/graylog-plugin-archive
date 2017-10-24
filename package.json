@@ -16,7 +16,9 @@
   ],
   "author": "99 Taxis <devs@99taxis.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "jquery": "^3.2.1"
+  },
   "devDependencies": {
     "graylog-web-plugin": "file:../graylog2-server/graylog2-web-interface/packages/graylog-web-plugin",
     "webpack": "^3.6.0"

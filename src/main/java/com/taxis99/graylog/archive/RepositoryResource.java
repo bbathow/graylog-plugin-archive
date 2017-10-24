@@ -1,6 +1,7 @@
 package com.taxis99.graylog.archive;
 
 import com.codahale.metrics.annotation.Timed;
+import com.taxis99.graylog.exception.SnapshotException;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.snapshot.GetSnapshotRepository;
@@ -38,7 +39,7 @@ public class RepositoryResource extends RestResource implements PluginRestResour
 
     @GET
     @Timed
-    @ApiOperation(value = "Lists all existing repositoryes registrations")
+    @ApiOperation(value = "Lists all existing repositories registrations")
     public List<String> getRepositoryCreated() {
         List<String> repoList = new ArrayList<>();
 
