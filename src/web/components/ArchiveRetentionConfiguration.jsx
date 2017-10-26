@@ -11,12 +11,14 @@ const ArchiveRetentionConfiguration = React.createClass({
   propTypes: {
     config: React.PropTypes.object.isRequired,
     updateConfig: PropTypes.func.isRequired,
-    repos: PropTypes.array
+    repos: PropTypes.array,
+    fieldReady: PropTypes.bool
   },
 
   getInitialState() {
     return {
       repos: ['Loading Repos'],
+      fieldReady: true,
       config: {
         max_number_of_indices: this.props.config.max_number_of_indices,
         name_of_repository: this.props.config.name_of_repository
@@ -41,17 +43,22 @@ const ArchiveRetentionConfiguration = React.createClass({
     return URLUtils.qualifyUrl(`${urlPrefix}${path}`);
   },
 
-  componentDidMount: function() {
-    const promise = fetch('GET', this._url('/system/repository'));
+  componentDidMount() {
+    var promise = fetch('GET', this._url('/system/repository'));
     promise
       .then(
         response => {
-          this.setState({repos: response})
+          try {
+            this.setState({
+              fieldReady: false,
+              repos: response
+            })
+          }catch(error) {
+            UserNotification.error(`Fetching Repositories failed with status: ${error}`,
+              'Could not retrieve Repositories');
+          }
         },
-        error => {
-          UserNotification.error(`Fetching Repositories failed with status: ${error}`,
-            'Could not retrieve Repositories');
-        });
+      );
   },
 
   render() {
@@ -61,22 +68,21 @@ const ArchiveRetentionConfiguration = React.createClass({
           <Input type="number"
                  id="max_number_of_indices"
                  label="Max number of elasticsearch indices"
-                 value={ this.state.config.max_number_of_indices }
-                 maxlength="100"
-                 onChange={ this._onInputUpdate('max_number_of_indices') }
-                 help={ <span>Maximum number of <strong>elasticsearch</strong> indices to <strong>snapshots</strong></span> }
+                 value={this.state.config.max_number_of_indices}
+                 maxLength="100"
+                 onChange={this._onInputUpdate('max_number_of_indices')}
+                 help={<span>Maximum number of <strong>elasticsearch</strong> indices to <strong>snapshots</strong></span>}
                  required />
-
 
           <div>
             <label className="control-label">Select the elasticsearch repository name</label>
           </div>
 
-          <select id="name_of_repository"
+          <select disabled={this.state.fieldReady} id="name_of_repository"
                   className="form-control"
-                  value={ this.state.config.name_of_repository }
-                  onChange={ this._onInputUpdate('name_of_repository') } >
-            { this.state.repos.map((name, repo) => <option value={ name } key={ repo }> { name } </option>) }
+                  value={this.state.config.name_of_repository}
+                  onChange={this._onInputUpdate('name_of_repository')} >
+            {this.state.repos.map((name, repo) => <option value={name}key={repo}>{name}</option>)}
           </select>
         </fieldset>
       </div>
