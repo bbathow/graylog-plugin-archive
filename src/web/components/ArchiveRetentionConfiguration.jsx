@@ -33,7 +33,6 @@ const ArchiveRetentionConfiguration = React.createClass({
       let config = this.state.config;
       let value = e.target.value;
       config[field] = value;
-      this.setState({config})
       this.props.updateConfig(config);
     };
   },
@@ -48,11 +47,10 @@ const ArchiveRetentionConfiguration = React.createClass({
       .then(
         response => {
           this.setState({repos: response})
-          repos = response;
         },
         error => {
-          UserNotification.error(`Fetching Collectors failed with status: ${error}`,
-            'Could not retrieve Collectors');
+          UserNotification.error(`Fetching Repositories failed with status: ${error}`,
+            'Could not retrieve Repositories');
         });
   },
 

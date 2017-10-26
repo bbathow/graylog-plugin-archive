@@ -32,16 +32,12 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
     private SnapshotServiceImpl snapshotService;
 
     @Inject
-    public ArchiveRetentionStrategy(Indices indices,
-                                     ActivityWriter activityWriter,
-                                     NodeId nodeId,
-                                     AuditEventSender auditEventSender,
-                                    SnapshotServiceImpl snapshotService ) {
+    public ArchiveRetentionStrategy(Indices indices, ActivityWriter activityWriter, Indices indices1, NodeId nodeId, AuditEventSender auditEventSender, SnapshotServiceImpl snapshotService) {
         super(indices, activityWriter);
-        this.indices = indices;
-        this.snapshotService = snapshotService;
+        this.indices = indices1;
         this.nodeId = nodeId;
         this.auditEventSender = auditEventSender;
+        this.snapshotService = snapshotService;
     }
 
     @Override
@@ -54,6 +50,7 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
         }
 
         final ArchiveRetentionStrategyConfig config = (ArchiveRetentionStrategyConfig) strategyConfig;
+        log.info("MaxNumberOfIndices: {} ", config.maxNumberOfIndices());
 
         return Optional.of(config.maxNumberOfIndices());
     }
@@ -68,8 +65,7 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
         }
 
         final ArchiveRetentionStrategyConfig config = (ArchiveRetentionStrategyConfig) strategyConfig;
-
-        log.info("Repository Name: ", config.nameOfRepository());
+        log.info("nameRepo {} " + config.nameOfRepository());
 
         return config.nameOfRepository();
     }
@@ -78,7 +74,6 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
     public void retain(String indexName, IndexSet indexSet) {
         final Stopwatch sw = Stopwatch.createStarted();
 
-        //create and delete
         log.info("retain ArchiveRetentionStrategy has been started");
 
         snapshotService.createSnapshot(getRepositoryName(indexSet), indexName);

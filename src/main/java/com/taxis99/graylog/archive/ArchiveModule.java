@@ -2,10 +2,12 @@ package com.taxis99.graylog.archive;
 
 import com.taxis99.graylog.SnapshotService;
 import com.taxis99.graylog.SnapshotServiceImpl;
+import com.taxis99.graylog.archive.rest.RepositoryResource;
 import com.taxis99.graylog.strategies.ArchiveRetentionStrategy;
 import org.graylog2.plugin.PluginConfigBean;
 import org.graylog2.plugin.PluginModule;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Set;
@@ -25,7 +27,7 @@ public class ArchiveModule extends PluginModule {
         return Collections.emptySet();
     }
 
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ArchiveModule.class);
+    private static final Logger log = LoggerFactory.getLogger(ArchiveModule.class);
 
     @Override
     protected void configure() {

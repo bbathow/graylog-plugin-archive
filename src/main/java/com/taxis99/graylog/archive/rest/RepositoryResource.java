@@ -1,6 +1,7 @@
-package com.taxis99.graylog.archive;
+package com.taxis99.graylog.archive.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.taxis99.graylog.SnapshotServiceImpl;
 import com.taxis99.graylog.exception.SnapshotException;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
@@ -29,35 +30,20 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class RepositoryResource extends RestResource implements PluginRestResource {
 
-    private final JestClient jestClient;
-    private static final Logger log = LoggerFactory.getLogger(RepositoryResource.class);
+    SnapshotServiceImpl snapshotService;
 
     @Inject
-    public RepositoryResource(JestClient jestClient) {
-        this.jestClient = jestClient;
+    public RepositoryResource(SnapshotServiceImpl snapshotService) {
+        this.snapshotService = snapshotService;
     }
 
     @GET
     @Timed
     @ApiOperation(value = "Lists all existing repositories registrations")
-    public List<String> getRepositoryCreated() {
-        List<String> repoList = new ArrayList<>();
+    public List<String> getRepositoryList() {
+        List<String> repoList;
 
-        try {
-
-            GetSnapshotRepository getSnapshotRepository = new GetSnapshotRepository.Builder().build();
-            JestResult jestResult = jestClient.execute(getSnapshotRepository);
-
-            JSONObject mainObject = new JSONObject(jestResult.getJsonString());
-            JSONArray tempArray = mainObject.names();
-
-            for(int i=0;i < tempArray.length();i++){
-                repoList.add(tempArray.getString(i));
-            }
-
-        } catch (Exception ex) {
-            log.error("Exception in createSnapshot method: " + ex.getMessage());
-        }
+        repoList = snapshotService.repositoryList();
 
         return repoList;
     }

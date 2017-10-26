@@ -8,7 +8,6 @@ const ArchiveRetentionStrategySummary = React.createClass({
 
   getInitialState() {
     return {
-      repos: ['Loading Repos'],
       config: {
         max_number_of_indices: this.props.config.max_number_of_indices,
         name_of_repository: this.props.config.name_of_repository
@@ -20,9 +19,9 @@ const ArchiveRetentionStrategySummary = React.createClass({
     return (
       <div>
         <dl>
-          <dt>Archive retention strategy:</dt>
-          <dd>Message Count</dd>
-          <dt>Max docs per index:</dt>
+          <dt>Repository Name:</dt>
+          <dd>{this.state.config.name_of_repository}</dd>
+          <dt>Max index retention:</dt>
           <dd>{this.state.config.max_number_of_indices}</dd>
         </dl>
       </div>

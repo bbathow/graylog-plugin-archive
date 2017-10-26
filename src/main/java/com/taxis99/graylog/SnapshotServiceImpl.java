@@ -3,21 +3,18 @@ package com.taxis99.graylog;
 import com.taxis99.graylog.exception.SnapshotException;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
-import io.searchbox.snapshot.CreateSnapshot;
-import io.searchbox.snapshot.CreateSnapshotRepository;
-import io.searchbox.snapshot.DeleteSnapshot;
-import io.searchbox.snapshot.DeleteSnapshotRepository;
+import io.searchbox.snapshot.*;
 import org.elasticsearch.common.settings.Settings;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-
-/**
- * Created by drsantos on 9/29/17.
- */
+import java.util.List;
 
 public class SnapshotServiceImpl implements SnapshotService {
 
@@ -85,7 +82,7 @@ public class SnapshotServiceImpl implements SnapshotService {
 
             snapshotName = new SimpleDateFormat("yyyy-MM-DD:HH:mm:ss").format(new Date());
 
-            JestResult jestResult = jestClient.execute(new CreateSnapshot.Builder(repositoryName, snapshotName)
+            JestResult jestResult = jestClient.execute(new CreateSnapshot.Builder(repositoryName, snapshotName).waitForCompletion(true)
                     .settings(registerRepositorySettings.build())
                     .build());
 
@@ -111,5 +108,28 @@ public class SnapshotServiceImpl implements SnapshotService {
         } catch (Exception ex){
             log.error("Exception in deleteSnapshot method: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public List<String> repositoryList() {
+        List<String> repoList = new ArrayList();
+
+        try {
+
+            GetSnapshotRepository getSnapshotRepository = new GetSnapshotRepository.Builder().build();
+            JestResult jestResult = jestClient.execute(getSnapshotRepository);
+
+            JSONObject mainObject = new JSONObject(jestResult.getJsonString());
+            JSONArray tempArray = mainObject.names();
+
+            for(int i=0;i < tempArray.length();i++){
+                repoList.add(tempArray.getString(i));
+            }
+
+        } catch (Exception ex) {
+            log.error("Exception in createSnapshot method: " + ex.getMessage());
+        }
+
+        return repoList;
     }
 }

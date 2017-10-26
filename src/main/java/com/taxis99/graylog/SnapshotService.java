@@ -19,4 +19,6 @@ public interface SnapshotService {
 
     void deleteSnapshot(String repositoryName, String snapshotName);
 
+    List<String> repositoryList();
+
 }
