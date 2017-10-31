@@ -1,7 +1,13 @@
 package com.taxis99.graylog.archive;
 
+import com.taxis99.graylog.SnapshotService;
+import com.taxis99.graylog.SnapshotServiceImpl;
+import com.taxis99.graylog.archive.rest.RepositoryResource;
+import com.taxis99.graylog.strategies.ArchiveRetentionStrategy;
 import org.graylog2.plugin.PluginConfigBean;
 import org.graylog2.plugin.PluginModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Set;
@@ -15,30 +21,21 @@ public class ArchiveModule extends PluginModule {
      *
      * Implementing this method is optional. The default method returns an empty {@link Set}.
      */
+
     @Override
     public Set<? extends PluginConfigBean> getConfigBeans() {
         return Collections.emptySet();
     }
 
+    private static final Logger log = LoggerFactory.getLogger(ArchiveModule.class);
+
     @Override
     protected void configure() {
-        /*
-         * Register your plugin types here.
-         *
-         * Examples:
-         *
-         * addMessageInput(Class<? extends MessageInput>);
-         * addMessageFilter(Class<? extends MessageFilter>);
-         * addMessageOutput(Class<? extends MessageOutput>);
-         * addPeriodical(Class<? extends Periodical>);
-         * addAlarmCallback(Class<? extends AlarmCallback>);
-         * addInitializer(Class<? extends Service>);
-         * addRestResource(Class<? extends PluginRestResource>);
-         *
-         *
-         * Add all configuration beans returned by getConfigBeans():
-         *
-         * addConfigBeans();
-         */
+
+        addRetentionStrategy(ArchiveRetentionStrategy.class);
+        bind(SnapshotService.class).to(SnapshotServiceImpl.class);
+        addConfigBeans();
+        addRestResource(RepositoryResource.class);
+        log.info("graylog-archive-plugin started");
     }
 }

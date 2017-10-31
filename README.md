@@ -1,6 +1,6 @@
-# Plugin Plugin for Graylog
+# Archive Plugin for Graylog
 
-[![Build Status](https://travis-ci.org/https://github.com/99Taxis/graylog-archive-plugin.svg?branch=master)](https://travis-ci.org/https://github.com/99Taxis/graylog-archive-plugin)
+[![Build Status](https://travis-ci.org/https://github.com/99Taxis/graylog-plugin-archive.svg?branch=master)](https://travis-ci.org/https://github.com/99Taxis/graylog-plugin-archive)
 
 __Use this paragraph to enter a description of your plugin.__
 
@@ -9,7 +9,7 @@ __Use this paragraph to enter a description of your plugin.__
 Installation
 ------------
 
-[Download the plugin](https://github.com/https://github.com/99Taxis/graylog-archive-plugin/releases)
+[Download the plugin](https://github.com/https://github.com/99Taxis/graylog-plugin-archive/releases)
 and place the `.jar` file in your Graylog plugin directory. The plugin directory
 is the `plugins/` folder relative from your `graylog-server` directory by default
 and can be configured in your `graylog.conf` file.

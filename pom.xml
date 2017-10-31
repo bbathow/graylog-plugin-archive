@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.taxis99</groupId>
-    <artifactId>graylog-archive-plugin</artifactId>
+    <artifactId>graylog-plugin-archive</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -20,9 +20,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:https://github.com/99Taxis/graylog-archive-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:https://github.com/99Taxis/graylog-archive-plugin.git</developerConnection>
-        <url>https://github.com/https://github.com/99Taxis/graylog-archive-plugin</url>
+        <connection>scm:git:git@github.com:https://github.com/99Taxis/graylog-plugin-archive.git</connection>
+        <developerConnection>scm:git:git@github.com:https://github.com/99Taxis/graylog-plugin-archive.git</developerConnection>
+        <url>https://github.com/https://github.com/99Taxis/graylog-plugin-archive</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -34,8 +34,18 @@
         <!-- Plugins will not be deployed by default - set to `false` if you actually want to deploy it -->
         <maven.deploy.skip>true</maven.deploy.skip>
 
-        <graylog.version>2.1.1</graylog.version>
+        <graylog.version>2.3.1</graylog.version>
+        <els.version>2.1.1</els.version>
+        <jest.version>2.0.1</jest.version>
+        <jest-common.version>2.4.9+jackson</jest-common.version>
+        <elasticsearch.version>5.6.2</elasticsearch.version>
+        <auto-value-javabean.version>3.0.0-SNAPSHOT</auto-value-javabean.version>
+        <auto-value.version>1.4.1</auto-value.version>
+        <json.version>20170516</json.version>
+        <junit.version>4.13-SNAPSHOT</junit.version>
+
         <graylog.plugin-dir>/usr/share/graylog-server/plugin</graylog.plugin-dir>
+
     </properties>
 
     <distributionManagement>
@@ -58,7 +68,7 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>true</enabled>
@@ -83,6 +93,47 @@
             <artifactId>graylog2-server</artifactId>
             <version>${graylog.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${els.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.searchbox</groupId>
+            <artifactId>jest</artifactId>
+            <version>${jest.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graylog.jest</groupId>
+            <artifactId>jest-common</artifactId>
+            <version>${jest-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graylog.autovalue</groupId>
+            <artifactId>auto-value-javabean</artifactId>
+            <version>${auto-value-javabean.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value</artifactId>
+            <version>${auto-value.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
     </dependencies>
 
@@ -113,6 +164,35 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerId>javac-with-errorprone</compilerId>
+                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                    <compilerArgs>
+                        <arg>-XepDisableWarningsInGeneratedCode</arg>
+                    </compilerArgs>
+                    <annotationProcessors>
+                        <annotationProcessor>com.google.auto.value.processor.AutoValueProcessor</annotationProcessor>
+                    </annotationProcessors>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-compiler-javac-errorprone</artifactId>
+                        <version>2.8.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.google.errorprone</groupId>
+                        <artifactId>error_prone_core</artifactId>
+                        <version>2.0.19</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
