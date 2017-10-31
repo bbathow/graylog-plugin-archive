@@ -44,7 +44,7 @@ const ArchiveRetentionConfiguration = React.createClass({
   },
 
   componentDidMount() {
-    var promise = fetch('GET', this._url('/system/repository'));
+    const promise = fetch('GET', this._url('/system/repository'));
     promise
       .then(
         response => {
