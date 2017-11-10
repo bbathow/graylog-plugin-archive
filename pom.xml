@@ -286,6 +286,13 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+        <id>99-artifactory-release</id>
+        <name>99-artifactory-release</name>
+        <url>https://artifactory.99taxis.com/artifactory/libs-release-local</url>
+        </repository>
+    </distributionManagement>
     <profiles>
         <profile>
             <id>web-interface-build</id>
