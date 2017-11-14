@@ -63,7 +63,7 @@
         <repository>
             <id>99-artifactory-release</id>
             <name>99-artifactory-release</name>
-            <url>https://artifactory.99taxis.com/artifactory/libs-release-local</url>
+            <url>https://artifactory.99taxis.com/artifactory/libs-release</url>
         </repository>
     </distributionManagement>
 
