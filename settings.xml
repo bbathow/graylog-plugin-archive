@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd" xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <servers>
+     <server>
+       <id>99-artifactory-release</id>
+       <username>99publish</username>
+       <password>61v7bmpJHP5NeRIes55y</password>
+     </server>
+     <server>
+       <id>99-artifactory-snapshot</id>
+       <username>99publish</username>
+       <password>61v7bmpJHP5NeRIes55y</password>
+     </server>
+  </servers>
+  <profiles>
+    <profile>
+      <repositories>
+
+        <repository>
+          <id>99-artifactory-release</id>
+          <name>libs-release</name>
+          <url>https://artifactory.99taxis.com/artifactory/libs-release</url>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+
+        <repository>
+          <id>99-artifactory-snapshot</id>
+          <name>libs-snapshot</name>
+          <url>https://artifactory.99taxis.com/artifactory/libs-snapshot</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+            <checksumPolicy>fail</checksumPolicy>
+          </snapshots>
+        </repository>
+      </repositories>
+      <id>artifactory</id>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>artifactory</activeProfile>
+  </activeProfiles>
+</settings>

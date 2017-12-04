@@ -9,6 +9,8 @@ __Use this paragraph to enter a description of your plugin.__
 Installation
 ------------
 
+* You can run `mvn clean install -f graylog2-server -DskipTests && mvn clean install -DskipTests` on root folder
+
 [Download the plugin](https://github.com/https://github.com/99Taxis/graylog-plugin-archive/releases)
 and place the `.jar` file in your Graylog plugin directory. The plugin directory
 is the `plugins/` folder relative from your `graylog-server` directory by default
