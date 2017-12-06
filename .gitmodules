@@ -1,4 +1,4 @@
 [submodule "graylog2-server"]
 	path = graylog2-server
 	url = https://github.com/Graylog2/graylog2-server
-	tags = 2.3.1
+	branch = 9f2c6ef5c1c0f8b77e73d1298d57c7223087eedf
