@@ -120,10 +120,12 @@ public class SnapshotServiceImpl implements SnapshotService {
             JestResult jestResult = jestClient.execute(getSnapshotRepository);
 
             JSONObject mainObject = new JSONObject(jestResult.getJsonString());
-            JSONArray tempArray = mainObject.names();
+            if(mainObject.names() != null) {
+                JSONArray tempArray = mainObject.names();
 
-            for(int i=0;i < tempArray.length();i++){
-                repoList.add(tempArray.getString(i));
+                for(int i=0;i < tempArray.length();i++){
+                    repoList.add(tempArray.getString(i));
+                }
             }
 
         } catch (Exception ex) {
