@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -72,20 +71,30 @@ public class ArchiveRetentionStrategy extends AbstractIndexCountBasedRetentionSt
 
     @Override
     public void retain(String indexName, IndexSet indexSet) {
+        final IndexSetConfig indexSetConfig = indexSet.getConfig();
+        final RetentionStrategyConfig strategyConfig = indexSetConfig.retentionStrategy();
         final Stopwatch sw = Stopwatch.createStarted();
 
+        final ArchiveRetentionStrategyConfig config = (ArchiveRetentionStrategyConfig) strategyConfig;
         log.info("retain ArchiveRetentionStrategy has been started");
 
-        snapshotService.createSnapshot(getRepositoryName(indexSet), indexName);
-        indices.delete(indexName);
+        try {
+            snapshotService.createSnapshot(getRepositoryName(indexSet), indexName);
+            indices.delete(indexName); 
+
+        } catch (Exception e) {
+            log.error("Error on index retention strategy for elasticsearch [delete] for index <{}> into repository <{}> in {}ms.", indexName,
+            config.nameOfRepository(), sw.stop().elapsed(TimeUnit.MILLISECONDS));
+        }
 
         auditEventSender.success(AuditActor.system(nodeId), ES_INDEX_RETENTION_DELETE, ImmutableMap.of(
                 "index_name", indexName,
+                "repository_name", config.nameOfRepository(),
                 "retention_strategy", this.getClass().getCanonicalName()
         ));
 
-        log.info("Finished index retention strategy for elasticsearch [delete] for index <{}> in {}ms.", indexName,
-                sw.stop().elapsed(TimeUnit.MILLISECONDS));
+        log.info("Success on index retention strategy for elasticsearch [create snapshot] for index <{}> into repository <{}> in {}ms.", indexName,
+                config.nameOfRepository(), sw.stop().elapsed(TimeUnit.MILLISECONDS));
     }
 
 
