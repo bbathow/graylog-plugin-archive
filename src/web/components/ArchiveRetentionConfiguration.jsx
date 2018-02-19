@@ -35,6 +35,11 @@ const ArchiveRetentionConfiguration = React.createClass({
       let config = this.state.config;
       let value = e.target.value;
       config[field] = value;
+      var configuredRepo = this.state.config['name_of_repository'];
+      if (field == 'name_of_repository' && value == 0) {
+        console.log('match')
+        config[field] = this.state.repos[0];
+      }
       this.props.updateConfig(config);
     };
   },
@@ -47,18 +52,17 @@ const ArchiveRetentionConfiguration = React.createClass({
     const promise = fetch('GET', this._url('/system/repository'));
     promise
       .then(
-        response => {
-          try {
-            this.setState({
-              fieldReady: false,
-              repos: response
-            })
-          }catch(error) {
-            UserNotification.error(`Fetching Repositories failed with status: ${error}`,
-              'Could not retrieve Repositories');
-          }
-        },
-      );
+        response => {          
+          this.setState({
+            fieldReady: false,
+            repos: response
+          });
+        })
+      .catch(
+        error =>  {
+          UserNotification.error(`Fetching Repositories failed with status: ${error}`,
+            'Could not retrieve Repositories')
+        });
   },
 
   render() {
@@ -82,6 +86,7 @@ const ArchiveRetentionConfiguration = React.createClass({
                   className="form-control"
                   value={this.state.config.name_of_repository}
                   onChange={this._onInputUpdate('name_of_repository')} >
+                  <option value="0">select...</option>
             {this.state.repos.map((name, repo) => <option value={name}key={repo}>{name}</option>)}
           </select>
         </fieldset>
