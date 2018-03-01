@@ -50,20 +50,15 @@
     </properties>
 
     <distributionManagement>
-        <!--snapshotRepository>
+        <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository-->
-        <!--repository>
+        <repository>
             <id>sonatype-nexus-staging</id>
             <name>Nexus Release Repository</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository-->
-        <repository>
-            <id>99-artifactory-release</id>
-            <name>99-artifactory-release</name>
-            <url>https://artifactory.99taxis.com/artifactory/libs-release</url>
         </repository>
     </distributionManagement>
 
