@@ -1,6 +1,6 @@
-# Archive Plugin for Graylog
+# Elastic Search Archive Plugin for Graylog
 
-[![Build Status](https://travis-ci.org/https://github.com/99Taxis/graylog-plugin-archive.svg?branch=master)](https://travis-ci.org/https://github.com/99Taxis/graylog-plugin-archive)
+![alt text](https://cdn-images-1.medium.com/max/1600/1*Wk5VjG-Ezqz_B56TQY3BZg.png)
 
 __Use this paragraph to enter a description of your plugin.__
 
@@ -58,3 +58,5 @@ $ mvn release:perform
 ```
 
 This sets the version numbers, creates a tag and pushes to GitHub. Travis CI will build the release artifacts and upload to GitHub automatically.
+
+Special Thanks for Mateus Dubiela (mateusduboli)
