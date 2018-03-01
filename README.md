@@ -1,4 +1,4 @@
-# Elastic Search Archive Plugin for Graylog
+# Elasticsearch Archive Plugin for Graylog
 
 ![alt text](https://cdn-images-1.medium.com/max/1600/1*Wk5VjG-Ezqz_B56TQY3BZg.png)
 
